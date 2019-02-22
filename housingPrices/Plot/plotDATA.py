@@ -47,17 +47,40 @@ for i in data:
 #plt.plot(medianHouseValue,longitude,'r.',label='longitude')
 #plt.plot(medianHouseValue,latitude,'g.',label='latitude')
 #plt.plot(medianHouseValue,housing_median_age,'g.',label='housing Median age')
-#plt.plot(medianHouseValue,total_rooms,'c.',label='total rooms')
+plt.plot(medianHouseValue,total_rooms,'c.',label='total rooms')
 #plt.plot(medianHouseValue,total_bedrooms,'m.',label='total bedrooms')
 #plt.plot(medianHouseValue,population,'y.',label='population')
 #plt.plot(medianHouseValue,households,'k.',label='households')
 #plt.plot(medianHouseValue,medianIncome,'r.',label='median income')
-plt.plot(total_rooms,total_bedrooms,'r.')
+#plt.plot(total_rooms,total_bedrooms,'r.')
 plt.xlabel('total rooms')
 plt.ylabel('total bedrooms')
 plt.legend()
+
+
+
+#------------------------------------------------------------------------------------
+
+total_rooms=np.array([total_rooms]).T
+one = np.ones((total_rooms.shape[0], 1))
+X = np.concatenate((one,total_rooms), axis = 1)
+y=np.array([medianHouseValue]).T
+
+#cal
+b=np.dot(X.T,y)
+A=np.dot(X.T,X)
+transposeOfA=np.linalg.pinv(A)
+theta=np.dot(transposeOfA,b)
+#
+print(theta)
+
+lin=np.array([min(total_rooms),max(total_rooms)])
+
+def J(x,theta):
+    return theta[0]+theta[1]*x
+
+
+costf=J(lin,theta)
+
+plt.plot(costf,lin,'r')
 plt.show()
-        
-
-
-
