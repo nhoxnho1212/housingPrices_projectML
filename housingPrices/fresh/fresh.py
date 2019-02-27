@@ -65,13 +65,16 @@ tmp_totalrooms.sort()
 median=tmp_totalrooms[int(len(tmp_totalrooms)/2)]
 arg=sum(tmp_totalrooms)/len_TotalRoom
 
-while (abs(median-arg)>0.001):
+while (abs(median-arg)>0.007):
+    #delete max value
     index_MHV=total_rooms.index(tmp_totalrooms[-1])
     medianHouseValue.remove(medianHouseValue[index_MHV])
     total_rooms.remove(tmp_totalrooms[-1])
-    #print(median,end=' , ')
-    #print(arg)
-    
+    #delete min value
+    index_MHV=total_rooms.index(tmp_totalrooms[0])
+    medianHouseValue.remove(medianHouseValue[index_MHV])
+    total_rooms.remove(tmp_totalrooms[0])
+
     median=tmp_totalrooms[int(len(tmp_totalrooms)/2)]
     arg=sum(tmp_totalrooms)/len(tmp_totalrooms)
 

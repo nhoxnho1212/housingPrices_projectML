@@ -55,26 +55,6 @@ min_MedianHouseValue=min(medianHouseValue)
 arg_MedianHouseValue=sum(medianHouseValue)/len_MedianHouseValue
 for i in range(len_MedianHouseValue):
     medianHouseValue[i]=(medianHouseValue[i]-arg_MedianHouseValue)/(max_MedianHouseValue-min_MedianHouseValue)
-#outlier-------------------------------------------------------
-max_MedianHouseValue=max(medianHouseValue)
-max_TotalRoom=max(total_rooms)
-outlier_x=list()
-outlier_y=list()
-tmp_totalrooms=total_rooms
-tmp_totalrooms.sort()
-median=tmp_totalrooms[int(len(tmp_totalrooms)/2)]
-arg=sum(tmp_totalrooms)/len_TotalRoom
-
-while (abs(median-arg)>0.001):
-    index_MHV=total_rooms.index(tmp_totalrooms[-1])
-    medianHouseValue.remove(medianHouseValue[index_MHV])
-    total_rooms.remove(tmp_totalrooms[-1])
-    #print(median,end=' , ')
-    #print(arg)
-    
-    median=tmp_totalrooms[int(len(tmp_totalrooms)/2)]
-    arg=sum(tmp_totalrooms)/len(tmp_totalrooms)
-
 
 #--------------------------------------------------------------
 theta=[]
@@ -97,7 +77,6 @@ costf=J(lin,theta)
 #plt.plot(medianHouseValue,latitude,'g.',label='latitude')
 #plt.plot(medianHouseValue,housing_median_age,'g.',label='housing Median age')
 plt.plot(total_rooms,medianHouseValue,'c.',label='total rooms')
-plt.plot(max_TotalRoom,max_MedianHouseValue,'c.')
 plt.plot(lin,costf,'r')
 #plt.plot(medianHouseValue,total_bedrooms,'m.',label='total bedrooms')
 #plt.plot(medianHouseValue,population,'y.',label='population')
@@ -106,6 +85,7 @@ plt.plot(lin,costf,'r')
 #plt.plot(total_rooms,total_bedrooms,'r.')
 plt.ylabel('median House value')
 plt.xlabel('total rooms')
+plt.axis([min(total_rooms), max(total_rooms), min(medianHouseValue), max(medianHouseValue)])
 plt.legend()
 plt.show()
 
