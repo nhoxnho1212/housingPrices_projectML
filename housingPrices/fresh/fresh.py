@@ -77,36 +77,8 @@ while (abs(median-arg)>0.001):
 
 
 #--------------------------------------------------------------
-theta=[]
-with open('./result.txt','r') as f:
-    reader=f.read()
-    
-    readstring=reader.split('\n')
-    x=readstring[1].split(' ')
-    theta.append(float(x[0]))
-    theta.append(float(x[1]))
-
-#plot data
-lin=np.array([min(total_rooms),max(total_rooms)])
-
-def J(x,theta):
-    return theta[0]+theta[1]*x
-costf=J(lin,theta)
-
-#plt.plot(medianHouseValue,longitude,'r.',label='longitude')
-#plt.plot(medianHouseValue,latitude,'g.',label='latitude')
-#plt.plot(medianHouseValue,housing_median_age,'g.',label='housing Median age')
-plt.plot(total_rooms,medianHouseValue,'c.',label='total rooms')
-plt.plot(max_TotalRoom,max_MedianHouseValue,'c.')
-plt.plot(lin,costf,'r')
-#plt.plot(medianHouseValue,total_bedrooms,'m.',label='total bedrooms')
-#plt.plot(medianHouseValue,population,'y.',label='population')
-#plt.plot(medianHouseValue,households,'k.',label='households')
-#plt.plot(medianHouseValue,medianIncome,'r.',label='median income')
-#plt.plot(total_rooms,total_bedrooms,'r.')
-plt.ylabel('median House value')
-plt.xlabel('total rooms')
-plt.legend()
-plt.show()
-
-
+#write
+with open('DATA/fresh.csv','w') as f:
+    lenx=len(total_rooms)
+    for i in range(lenx):
+        f.write('%s\t%s\n'%(str(total_rooms[i]),str(medianHouseValue[i])))
