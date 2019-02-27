@@ -43,44 +43,48 @@ for i in data:
     medianIncome.append(i[7])
     medianHouseValue.append(i[8])
 
+#norm
+len_TotalRoom=len(total_rooms)
+arg_TotalRoom=sum(total_rooms)/len_TotalRoom
+max_TotalRoom=max(total_rooms)
+min_TotalRoom=min(total_rooms)
+for i in range(len_TotalRoom):
+    total_rooms[i]=(total_rooms[i]-arg_TotalRoom)/(max_TotalRoom-min_TotalRoom)
 
+len_MedianHouseValue=len(medianHouseValue)
+max_MedianHouseValue=max(medianHouseValue)
+min_MedianHouseValue=min(medianHouseValue)
+arg_MedianHouseValue=sum(medianHouseValue)/len_MedianHouseValue
+for i in range(len_MedianHouseValue):
+    medianHouseValue[i]=(medianHouseValue[i]-arg_MedianHouseValue)/(max_MedianHouseValue-min_MedianHouseValue)
+
+theta=[]
+with open('./result.txt','r') as f:
+    reader=f.read()
+    
+    readstring=reader.split('\n')
+    x=readstring[1].split(' ')
+    theta.append(float(x[0]))
+    theta.append(float(x[1]))
+
+#plot data
+lin=np.array([min(total_rooms),max(total_rooms)])
+
+def J(x,theta):
+    return theta[0]+theta[1]*x
+costf=J(lin,theta)
+
+plt.plot(lin,costf,'r')
 #plt.plot(medianHouseValue,longitude,'r.',label='longitude')
 #plt.plot(medianHouseValue,latitude,'g.',label='latitude')
 #plt.plot(medianHouseValue,housing_median_age,'g.',label='housing Median age')
-plt.plot(medianHouseValue,total_rooms,'c.',label='total rooms')
+plt.plot(total_rooms,medianHouseValue,'c.',label='total rooms')
 #plt.plot(medianHouseValue,total_bedrooms,'m.',label='total bedrooms')
 #plt.plot(medianHouseValue,population,'y.',label='population')
 #plt.plot(medianHouseValue,households,'k.',label='households')
 #plt.plot(medianHouseValue,medianIncome,'r.',label='median income')
 #plt.plot(total_rooms,total_bedrooms,'r.')
+plt.ylabel('median House value')
 plt.xlabel('total rooms')
-plt.ylabel('total bedrooms')
 plt.legend()
-
-
-
-#------------------------------------------------------------------------------------
-
-total_rooms=np.array([total_rooms]).T
-one = np.ones((total_rooms.shape[0], 1))
-X = np.concatenate((one,total_rooms), axis = 1)
-y=np.array([medianHouseValue]).T
-
-#cal
-b=np.dot(X.T,y)
-A=np.dot(X.T,X)
-transposeOfA=np.linalg.pinv(A)
-theta=np.dot(transposeOfA,b)
-#
-print(theta)
-
-lin=np.array([min(total_rooms),max(total_rooms)])
-
-def J(x,theta):
-    return theta[0]+theta[1]*x
-
-
-costf=J(lin,theta)
-
-plt.plot(costf,lin,'r')
 plt.show()
