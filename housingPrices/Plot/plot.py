@@ -58,7 +58,7 @@ for i in range(len_MedianHouseValue):
 
 #--------------------------------------------------------------
 theta=[]
-with open('./result.txt','r') as f:
+with open('./ResultTrain.txt','r') as f:
     reader=f.read()
     
     readstring=reader.split('\n')

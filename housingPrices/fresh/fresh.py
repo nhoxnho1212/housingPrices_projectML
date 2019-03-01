@@ -1,8 +1,14 @@
 import csv
 import numpy as np
 import matplotlib.pyplot as plt
+
+FileDataNearBay='DATA/nearBay.csv'
+FileOutlier='outlier.txt'
+FileDataFreshTrain='DATA/freshTrain.csv'
+FileDataFreshTest='DATA/freshTest.csv'
 data=[]
-with open('DATA/nearBay.csv','r') as f:
+
+with open(FileDataNearBay,'r') as f:
     reader=f.read()
     tmp=reader.split('\n')
     for x in tmp:
@@ -65,23 +71,37 @@ tmp_totalrooms.sort()
 median=tmp_totalrooms[int(len(tmp_totalrooms)/2)]
 arg=sum(tmp_totalrooms)/len_TotalRoom
 
-while (abs(median-arg)>0.007):
-    #delete max value
-    index_MHV=total_rooms.index(tmp_totalrooms[-1])
-    medianHouseValue.remove(medianHouseValue[index_MHV])
-    total_rooms.remove(tmp_totalrooms[-1])
-    #delete min value
-    index_MHV=total_rooms.index(tmp_totalrooms[0])
-    medianHouseValue.remove(medianHouseValue[index_MHV])
-    total_rooms.remove(tmp_totalrooms[0])
 
-    median=tmp_totalrooms[int(len(tmp_totalrooms)/2)]
-    arg=sum(tmp_totalrooms)/len(tmp_totalrooms)
+with open(FileOutlier,'w') as fw:        
+    while (abs(median-arg)>0.0071):
+        #delete max value
+        index_MHV=total_rooms.index(tmp_totalrooms[-1])
+        textWrite=str(medianHouseValue[index_MHV])
+        medianHouseValue.remove(medianHouseValue[index_MHV])
+        textWrite=str((tmp_totalrooms[-1]))+" "+textWrite
+        total_rooms.remove(tmp_totalrooms[-1])
+        #delete min value
+        index_MHV=total_rooms.index(tmp_totalrooms[0])
+        medianHouseValue.remove(medianHouseValue[index_MHV])
+        total_rooms.remove(tmp_totalrooms[0])
+
+        median=tmp_totalrooms[int(len(tmp_totalrooms)/2)]
+        arg=sum(tmp_totalrooms)/len(tmp_totalrooms)
+
+        #write file
+        fw.write((textWrite+"\n"))
+
 
 
 #--------------------------------------------------------------
 #write
-with open('DATA/fresh.csv','w') as f:
-    lenx=len(total_rooms)
-    for i in range(lenx):
-        f.write('%s\t%s\n'%(str(total_rooms[i]),str(medianHouseValue[i])))
+with open(FileDataFreshTest,'w') as fTest:
+    with open(FileDataFreshTrain,'w') as fTrain:
+        lenx=len(total_rooms)
+        check=True
+        for i in range(lenx):
+            if check:
+                fTrain.write('%s\t%s\n'%(str(total_rooms[i]),str(medianHouseValue[i])))
+            else:
+                fTest.write('%s\t%s\n'%(str(total_rooms[i]),str(medianHouseValue[i])))
+            check=not(check)

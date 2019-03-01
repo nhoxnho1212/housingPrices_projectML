@@ -1,9 +1,11 @@
 import csv
 import numpy as np
 
+DataTrainFile='./DATA/freshTrain.csv'
+ResultTrainFile='ResultTrain.txt'
 
 data=[]
-with open('./DATA/fresh.csv','r') as f:
+with open(DataTrainFile,'r') as f:
     reader=f.read()
     tmp=reader.split('\n')
     for x in tmp:
@@ -45,6 +47,6 @@ for i in range(len_TotalRoom):
 
 l*=(1/(2*len_TotalRoom))
 #
-with open('result.txt','w') as f:
+with open(ResultTrainFile,'w') as f:
     f.write('lost function: %s\n%s %s' %(str(l),str(theta[0][0]),str(theta[1][0])))
 
