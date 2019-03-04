@@ -21,6 +21,7 @@ total_rooms=[]
 
 #medianHouseValue: Median house value for households within a block (measured in US Dollars)
 medianHouseValue=[]
+
 for i in data: 
     total_rooms.append(i[0])
     medianHouseValue.append(i[1])

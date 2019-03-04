@@ -62,6 +62,35 @@ arg_MedianHouseValue=sum(medianHouseValue)/len_MedianHouseValue
 for i in range(len_MedianHouseValue):
     medianHouseValue[i]=(medianHouseValue[i]-arg_MedianHouseValue)/(max_MedianHouseValue-min_MedianHouseValue)
 #outlier-------------------------------------------------------
+#max_MedianHouseValue=max(medianHouseValue)
+#max_TotalRoom=max(total_rooms)
+#outlier_x=list()
+#outlier_y=list()
+#tmp_totalrooms=total_rooms
+#tmp_totalrooms.sort()
+#median=tmp_totalrooms[int(len(tmp_totalrooms)/2)]
+#arg=sum(tmp_totalrooms)/len_TotalRoom
+#
+#
+#with open(FileOutlier,'w') as fw:        
+#    while (abs(median-arg)>0.0071):
+#        #delete max value
+#        index_MHV=total_rooms.index(tmp_totalrooms[-1])
+#        textWrite=str(medianHouseValue[index_MHV])
+#        medianHouseValue.remove(medianHouseValue[index_MHV])
+#        textWrite=str((tmp_totalrooms[-1]))+" "+textWrite
+#        total_rooms.remove(tmp_totalrooms[-1])
+#        #delete min value
+#        index_MHV=total_rooms.index(tmp_totalrooms[0])
+#        medianHouseValue.remove(medianHouseValue[index_MHV])
+#        total_rooms.remove(tmp_totalrooms[0])
+#
+#        arg=sum(tmp_totalrooms)/len(tmp_totalrooms)
+#        median=tmp_totalrooms[int(len(tmp_totalrooms)/2)]
+#
+#        #write file
+#        fw.write((textWrite+"\n"))
+
 max_MedianHouseValue=max(medianHouseValue)
 max_TotalRoom=max(total_rooms)
 outlier_x=list()
@@ -72,29 +101,34 @@ median=tmp_totalrooms[int(len(tmp_totalrooms)/2)]
 arg=sum(tmp_totalrooms)/len_TotalRoom
 
 
-with open(FileOutlier,'w') as fw:        
-    while (abs(median-arg)>0.0071):
-        #delete max value
+middle=int(len_TotalRoom/4)
+Q1=tmp_totalrooms[middle-1]
+Q3=tmp_totalrooms[-middle]
+IQR=Q3-Q1
+
+with open(FileOutlier,'w') as fw:
+    while (tmp_totalrooms[0]<Q1-1.5*IQR):
+        index_MHV=total_rooms.index(tmp_totalrooms[0])
+        textWrite=str(medianHouseValue[index_MHV])
+        medianHouseValue.remove(medianHouseValue[index_MHV])
+        textWrite=str((tmp_totalrooms[0]))+" "+textWrite
+        total_rooms.remove(tmp_totalrooms[0])
+        #write file
+        fw.write((textWrite+"\n"))
+    
+    while (tmp_totalrooms[-1]>Q1+1.5*IQR):
         index_MHV=total_rooms.index(tmp_totalrooms[-1])
         textWrite=str(medianHouseValue[index_MHV])
         medianHouseValue.remove(medianHouseValue[index_MHV])
         textWrite=str((tmp_totalrooms[-1]))+" "+textWrite
         total_rooms.remove(tmp_totalrooms[-1])
-        #delete min value
-        index_MHV=total_rooms.index(tmp_totalrooms[0])
-        medianHouseValue.remove(medianHouseValue[index_MHV])
-        total_rooms.remove(tmp_totalrooms[0])
-
-        median=tmp_totalrooms[int(len(tmp_totalrooms)/2)]
-        arg=sum(tmp_totalrooms)/len(tmp_totalrooms)
-
         #write file
         fw.write((textWrite+"\n"))
-
-
+    
 
 #--------------------------------------------------------------
 #write
+
 with open(FileDataFreshTest,'w') as fTest:
     with open(FileDataFreshTrain,'w') as fTrain:
         lenx=len(total_rooms)
